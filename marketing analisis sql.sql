@@ -102,5 +102,23 @@ SET contenttype = CASE
     ELSE ContentType
 END;
 
+--Query to separate Views and Clicks variables
+SELECT 
+    EngagementID,
+    SPLIT_PART(ViewsClicksCombined, '-', 1) AS Views,
+    SPLIT_PART(ViewsClicksCombined, '-', 2) AS Clicks
+FROM engagement;
 
+ALTER TABLE engagement
+ADD COLUMN Views INTEGER,
+ADD COLUMN Clicks INTEGER;
 
+UPDATE engagement
+SET 
+    Views = SPLIT_PART(ViewsClicksCombined, '-', 1)::INTEGER,
+    Clicks = SPLIT_PART(ViewsClicksCombined, '-', 2)::INTEGER;
+
+ALTER TABLE engagement
+DROP COLUMN ViewsClicksCombined;
+
+SELECT * FROM engagement
