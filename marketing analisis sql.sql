@@ -122,3 +122,33 @@ ALTER TABLE engagement
 DROP COLUMN ViewsClicksCombined;
 
 SELECT * FROM engagement
+
+---------------------------------------------------------
+SELECT * FROM products
+
+--Remove the category column
+ALTER TABLE products
+DROP COLUMN category;
+
+--  Query to classify prices by 'low', 'medium' and 'high'
+SELECT price, 
+CASE 
+	WHEN price < 50 THEN 'low'
+	WHEN price BETWEEN 50 AND 200 THEN 'Medium'
+	ELSE 'High'
+END AS pricecategory
+FROM products;
+
+ALTER TABLE products -- Create new column
+ADD COLUMN pricecategory
+VARCHAR(10);
+
+UPDATE products 
+SET pricecategory = 
+CASE 
+	WHEN price < 50 THEN 'low'
+	WHEN price BETWEEN 50 AND 200 THEN 'Medium'
+	ELSE 'High'
+END;
+
+
