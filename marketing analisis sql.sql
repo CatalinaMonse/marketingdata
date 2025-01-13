@@ -40,10 +40,6 @@ WHERE ctid IN (
     WHERE row_num > 1  -- This eliminates duplicate rows, leaving the first one
 );
 
-SELECT * 
-FROM customer_journey
-ORDER BY journeyid ASC;
-
 --The average of the Duration column and then update the null values
 WITH avg_duration AS (
     SELECT AVG(Duration) AS avg_value
@@ -58,6 +54,10 @@ SELECT *
 FROM customer_journey
 ORDER BY journeyid ASC;
 
+COPY (SELECT * FROM customer_journey --Exports the data from the customer_journey table to a CSV file
+    ORDER BY journeyid ASC -- Data is sorted by the 'journeyid' field in ascending order before being exported.
+) TO '\customer_journey.csv' WITH (FORMAT CSV, HEADER);  -- add file path
+
 --------------------------------------------------------------------
 SELECT * FROM customer_review
 
@@ -65,13 +65,14 @@ SELECT * FROM customer_review
 UPDATE customer_review
 SET ReviewText = REGEXP_REPLACE(ReviewText, '\s+', ' ', 'g')
 WHERE ReviewText IS NOT NULL;
+-- This table is not exported to CSV because it will be processed and analyzed in Python.
 
 -------------------------------------------------------------------
 SELECT * FROM customers;
 SELECT * FROM geography
 	
--- JOIN customers with geography to enrich customer data with geographic information
-
+-- Create a new table 'customers_enriched' by joining 'customers' and 'geography' tables
+CREATE TABLE customers_enriched AS 
 SELECT
 	c.customerid,
 	c.customername,
@@ -83,6 +84,9 @@ SELECT
 FROM customers AS c
 LEFT JOIN geography AS g
 ON c.geographyid = g.geographyid;
+
+-- The resulting 'customers_enriched' table is then exported to a CSV file, including column headers.
+COPY customers_enriched TO '\customers_enriched.csv' WITH (FORMAT csv, HEADER true); -- add file path
 
 ------------------------------------------------------------
 SELECT * FROM engagement
@@ -121,7 +125,8 @@ SET
 ALTER TABLE engagement
 DROP COLUMN ViewsClicksCombined;
 
-SELECT * FROM engagement
+-- Export the 'engagement' table to a CSV file
+COPY engagement TO '\engagement.csv' WITH (FORMAT csv, HEADER true); --ad file path
 
 ---------------------------------------------------------
 SELECT * FROM products
@@ -151,4 +156,5 @@ CASE
 	ELSE 'High'
 END;
 
-
+-- Export the 'products' table to a CSV file
+COPY products TO '\products.csv' WITH (FORMAT csv, HEADER true); --ad file path

@@ -1,0 +1,21 @@
+productid,productname,price,pricecategory
+1,Running Shoes,223.75,High
+2,Fitness Tracker,196.68,Medium
+3,Yoga Mat,485.32,High
+4,Dumbbells,26.21,low
+5,Soccer Ball,41.26,low
+6,Tennis Racket,36.07,low
+7,Basketball,225.12,High
+8,Football Helmet,44.75,low
+9,Baseball Glove,327.36,High
+10,Golf Clubs,81.59,Medium
+11,Ski Boots,340.20,High
+12,Ice Skates,37.56,low
+13,Swim Goggles,145.97,Medium
+14,Cycling Helmet,472.32,High
+15,Climbing Rope,410.17,High
+16,Kayak,259.40,High
+17,Surfboard,275.43,High
+18,Volleyball,42.80,low
+19,Hockey Stick,173.83,Medium
+20,Boxing Gloves,262.32,High
